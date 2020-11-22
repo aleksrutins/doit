@@ -7,15 +7,28 @@
     <property name="height-request">500</property>
     <property name="can-focus">False</property>
     <child>
-      <object class="GtkListBox" id="_tasks">
+      <object class="GtkScrolledWindow">
         <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <child type="placeholder">
-          <object class="GtkLabel">
+        <property name="can-focus">True</property>
+        <property name="shadow-type">in</property>
+        <child>
+          <object class="GtkViewport">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes">&lt;i&gt;No Items&lt;/i&gt;</property>
-            <property name="use-markup">True</property>
+            <child>
+              <object class="GtkListBox" id="_tasks">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <child type="placeholder">
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="label" translatable="yes">&lt;i&gt;No Items&lt;/i&gt;</property>
+                    <property name="use-markup">True</property>
+                  </object>
+                </child>
+              </object>
+            </child>
           </object>
         </child>
       </object>

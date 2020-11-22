@@ -1,23 +1,13 @@
 using Gtk;
-
+using UI = Gtk.Builder.ObjectAttribute;
 namespace DoIt {
     public class AddTaskDialog : Dialog {
-        public Entry desc;
-        public AddTaskDialog(Window parent) : base("Add Task", parent, DialogFlags.UseHeaderBar) {
-            var lblDesc = new Label("Description: ");
-            desc = new Entry();
-            var lblDays = new Label("Days: ");
-            var days = new Button(new Label("Choose"));
-            var mainBox = new Box(Orientation.Vertical, 2);
-            var boxDays = new Box(Orientation.Horizontal, 2);
-            var boxDesc = new Box(Orientation.Horizontal, 2);
-            boxDesc.Add(lblDesc);
-            boxDesc.Add(desc);
-            boxDays.Add(lblDays);
-            boxDays.Add(days);
-            mainBox.Add(boxDesc);
-            mainBox.Add(boxDays);
-            ContentArea.Add(mainBox);
+        [UI] public TextView desc;
+        [UI] public Entry name;
+        [UI] public Entry days;
+        public AddTaskDialog() : this(new Builder("AddTaskDialog.glade")) {}
+        public AddTaskDialog(Builder builder) : base(builder.GetObject("AddTaskDialog").Handle) {
+            builder.Autoconnect(this);
             AddButton("Cancel", ResponseType.Cancel);
             AddButton("OK", ResponseType.Ok);
             ShowAll();

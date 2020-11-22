@@ -4,10 +4,35 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
+using Gtk;
 
 namespace DoIt
 {
     public class Util {
+        public class DialogParseResult {
+            public AddTaskDialog dlg;
+            public List<DayOfWeek> days;
+        }
+        public static DialogParseResult AddTask() {
+            var dlg = new AddTaskDialog();
+            var res = (ResponseType)dlg.Run();
+            dlg.Hide();
+            if(res == ResponseType.Cancel) return null;
+            var days = new List<DayOfWeek>();
+            if(dlg.days.Text == "All") {
+                days.AddRange(new DayOfWeek[] {DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday, DayOfWeek.Sunday});
+            } else if(!(dlg.days.Text == "" || dlg.days.Text == "None" || dlg.days.Text == null)) {
+                var dayStrs = dlg.days.Text.Split(',');
+                foreach (var dayStr in dayStrs)
+                {
+                    days.Add((DayOfWeek)Enum.Parse(typeof(DayOfWeek), dayStr));
+                }
+            }
+            return new DialogParseResult {
+                dlg = dlg,
+                days = days
+            };
+        }
         // https://github.com/GtkSharp/GtkSharp/blob/develop/Source/Samples/Sections/Widgets/ImageSection.cs#L24
         public static Stream GetResourceStream(Assembly assembly, string name)
         {
@@ -31,6 +56,7 @@ namespace DoIt
         public static string itemsFile = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/.doit.list.bin";
         public static ToDoList toDos;
         public static void LoadToDos() {
+            Console.WriteLine("Loading todos");
             var fmt = new BinaryFormatter();
             var stream = new FileStream(itemsFile, FileMode.OpenOrCreate, FileAccess.Read);
             try {
@@ -42,18 +68,30 @@ namespace DoIt
             }
         }
         public static void SaveToDos() {
+            Console.WriteLine("Saving todos");
             var fmt = new BinaryFormatter();
             var stream = new FileStream(itemsFile, FileMode.OpenOrCreate, FileAccess.Write);
             fmt.Serialize(stream, toDos);
             stream.Close();
         }
         public static void RefreshList(Gtk.ListBox widget) {
+            RefreshList(widget, toDos, item => {
+                toDos.items.Remove(item);
+                RefreshList(widget);
+            });
+        }
+        public delegate void ItemRemovedCallback(ToDoItem item);
+        public static void RefreshList(Gtk.ListBox widget, ToDoList list, ItemRemovedCallback removedCb) {
             foreach (var child in widget.Children) {
                 widget.Remove(child); // Clear listbox
             }
-            foreach (var todo in toDos.items)
+            foreach (var todo in list.items)
             {
-                widget.Add(new ToDoListItem(widget, todo));
+                var tdli = new ToDoListItem(widget, todo);
+                tdli.deleteBtn.Clicked += delegate {
+                    removedCb(todo);
+                };
+                widget.Add(tdli);
             }
             widget.ShowAll();
         }

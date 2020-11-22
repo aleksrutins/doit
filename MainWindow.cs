@@ -9,8 +9,7 @@ namespace DoIt
     {
         [UI] private ListBox _tasks = null;
         [UI] private Button _addTask = null;
-
-        private int _counter;
+        [UI] private Button flushBtn = null;
 
         public MainWindow() : this(new Builder("MainWindow.glade")) { }
 
@@ -20,6 +19,13 @@ namespace DoIt
 
             DeleteEvent += Window_DeleteEvent;
             _addTask.Clicked += AddTask;
+            _tasks.ListRowActivated += (o, args) => {
+                var row = (ToDoListItem)args.Row;
+                ToDoListItem.ShowDetails(this, row);
+            };
+            flushBtn.Clicked += delegate {
+                Util.SaveToDos();
+            };
             Util.RefreshList(_tasks);
         }
 
@@ -29,12 +35,11 @@ namespace DoIt
         }
 
         private void AddTask(object sender, EventArgs e) {
-            var dlg = new AddTaskDialog(this);
-            var res = (ResponseType)dlg.Run();
-            dlg.Hide();
-            if(res == ResponseType.Cancel) return;
+            var res = Util.AddTask();
             Util.toDos.items.Add(new ToDoItem {
-                description = dlg.desc.Text
+                name = res.dlg.name.Text,
+                description = res.dlg.desc.Buffer.Text,
+                days = res.days
             });
             Util.RefreshList(_tasks);
         }

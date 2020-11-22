@@ -1,6 +1,10 @@
-.doitnow {
+.day {
     border-radius: 5px;
+    padding: 3px;
+    background-color: lightgray;
+    color: black;
+}
+.day.doitnow {
     background-color: red;
     color: white;
-    padding: 3px;
 }
