@@ -37,12 +37,15 @@ namespace DoIt
             builder.Autoconnect(this);
             toDoName.Text = item.name;
             description.Buffer.Text = item.description;
-            if(item.done && item.doneOn.Value.Day == DateTime.Now.Day) {
+            if(item.done && (item.doneOn.Value.Day == DateTime.Now.Day || (item.days.IndexOf(DateTime.Now.DayOfWeek) == -1))) {
                 doneLabel.Text = "Done";
                 doneLabel.StyleContext.RemoveClass("notdone");
                 doneLabel.StyleContext.AddClass("done");
-            } else {
+            } else if(item.days.IndexOf(DateTime.Now.DayOfWeek) != -1) {
                 item.done = false;
+                doneLabel.StyleContext.RemoveClass("done");
+                doneLabel.StyleContext.AddClass("notdone");
+                doneLabel.Text = "Not done";
             }
             foreach(var day in item.days) {
                 var lbl = new Label(day.ToString());
@@ -99,15 +102,18 @@ namespace DoIt
             box.PackStart(label, true, true, 0);
             deleteBtn = new Button(new Label("Delete"));
             deleteBtn.StyleContext.AddClass("danger");
-            var doneLabel = new Label("Not done");
-            doneLabel.StyleContext.AddClass("done-label");
-            doneLabel.StyleContext.AddClass("notdone");
+            var doneLabel = new Label();
             if(item.done && (item.doneOn.Value.Day == DateTime.Now.Day || (item.days.IndexOf(DateTime.Now.DayOfWeek) == -1))) {
+                doneLabel.StyleContext.AddClass("done-label");
                 doneLabel.Text = "Done";
                 doneLabel.StyleContext.RemoveClass("notdone");
                 doneLabel.StyleContext.AddClass("done");
-            } else {
+            } else if(item.days.IndexOf(DateTime.Now.DayOfWeek) != -1) {
+                doneLabel.StyleContext.AddClass("done-label");
                 item.done = false;
+                doneLabel.StyleContext.RemoveClass("done");
+                doneLabel.StyleContext.AddClass("notdone");
+                doneLabel.Text = "Not done";
             }
             box.PackStart(doneLabel, false, false, 3);
             var completeBtn = new Button(new Label("Complete"));
