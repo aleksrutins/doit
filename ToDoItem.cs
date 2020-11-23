@@ -102,7 +102,7 @@ namespace DoIt
             var doneLabel = new Label("Not done");
             doneLabel.StyleContext.AddClass("done-label");
             doneLabel.StyleContext.AddClass("notdone");
-            if(item.done && item.doneOn.Value.Day == DateTime.Now.Day) {
+            if(item.done && (item.doneOn.Value.Day == DateTime.Now.Day || (item.days.IndexOf(DateTime.Now.DayOfWeek) == -1))) {
                 doneLabel.Text = "Done";
                 doneLabel.StyleContext.RemoveClass("notdone");
                 doneLabel.StyleContext.AddClass("done");

@@ -25,6 +25,8 @@ namespace DoIt
                 days.AddRange(new DayOfWeek[] {DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday, DayOfWeek.Sunday});
             } else if(dlg.days.Text == "Inherit") {
                 inheritDays = true;
+            } else if(dlg.days.Text == "Weekdays") {
+                days.AddRange(new DayOfWeek[] {DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday});
             } else if(!(dlg.days.Text == "" || dlg.days.Text == "None" || dlg.days.Text == null)) {
                 var dayStrs = dlg.days.Text.Split(',');
                 foreach (var dayStr in dayStrs)
