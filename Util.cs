@@ -100,7 +100,7 @@ namespace DoIt
                 };
                 widget.Add(tdli);
             }
-            widget.ShowAll();
+            widget.Show();
         }
     }
 }

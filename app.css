@@ -3,6 +3,7 @@
     padding: 3px;
     background-color: lightgray;
     color: black;
+    margin: 3px;
 }
 .day.doitnow, .done-label.notdone {
     background-color: red;

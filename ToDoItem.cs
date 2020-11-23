@@ -92,9 +92,26 @@ namespace DoIt
             completeBtn.Clicked += delegate {
                 item.done = true;
                 item.doneOn = DateTime.Now;
-                doneLabel.Text = "Done";
-                doneLabel.StyleContext.RemoveClass("notdone");
-                doneLabel.StyleContext.AddClass("done");
+                if(item.done && item.doneOn.Value.Day != DateTime.Now.Day && item.days.IndexOf(DateTime.Now.DayOfWeek) != -1) {
+                    item.done = false;
+                    Util.SaveToDos();
+                    completeBtn.Hide();
+                }
+                if((item.done && item.doneOn.Value.Day == DateTime.Now.Day) && item.days.IndexOf(DateTime.Now.DayOfWeek) != -1) {
+                    doneLabel.StyleContext.AddClass("done-label");
+                    doneLabel.Text = "Done";
+                    doneLabel.StyleContext.RemoveClass("notdone");
+                    doneLabel.StyleContext.AddClass("done");
+                } else if(item.done) {
+                    doneLabel.Text = "";
+                    doneLabel.StyleContext.RemoveClass("done-label");
+                } else if(!item.done) {
+                    doneLabel.StyleContext.AddClass("done-label");
+                    doneLabel.StyleContext.RemoveClass("done");
+                    doneLabel.StyleContext.AddClass("notdone");
+                    doneLabel.Text = "Not done";
+                    completeBtn.Show();
+                }
             };
             refreshSubtasksBtn.Clicked += delegate {
                 Util.RefreshList(subtasks, ToDoList.fromArray(item.subtasks), subtaskRemoved);
@@ -112,33 +129,36 @@ namespace DoIt
             box.PackStart(label, true, true, 0);
             deleteBtn = new Button(new Label("Delete"));
             deleteBtn.StyleContext.AddClass("danger");
-            var doneLabel = new Label();
-            if(item.done && item.doneOn.Value.Day != DateTime.Now.Day && item.days.IndexOf(DateTime.Now.DayOfWeek) != -1) {
-                item.done = false;
-                Util.SaveToDos();
-            }
-            if((item.done && item.doneOn.Value.Day == DateTime.Now.Day) && item.days.IndexOf(DateTime.Now.DayOfWeek) != -1) {
-                doneLabel.StyleContext.AddClass("done-label");
-                doneLabel.Text = "Done";
-                doneLabel.StyleContext.RemoveClass("notdone");
-                doneLabel.StyleContext.AddClass("done");
-            } else if(!item.done) {
-                doneLabel.StyleContext.AddClass("done-label");
-                doneLabel.StyleContext.RemoveClass("done");
-                doneLabel.StyleContext.AddClass("notdone");
-                doneLabel.Text = "Not done";
-            }
             
-            box.PackStart(doneLabel, false, false, 3);
+            var doneLabel = new Label();
             var completeBtn = new Button(new Label("Complete"));
             completeBtn.Clicked += delegate {
                 item.done = true;
                 item.doneOn = DateTime.Now;
-                doneLabel.Text = "Done";
-                doneLabel.StyleContext.RemoveClass("notdone");
-                doneLabel.StyleContext.AddClass("done");
-                Util.SaveToDos();
+                if(item.done && item.doneOn.Value.Day != DateTime.Now.Day && item.days.IndexOf(DateTime.Now.DayOfWeek) != -1) {
+                    item.done = false;
+                    Util.SaveToDos();
+                }
+                completeBtn.Hide();
+                if((item.done && item.doneOn.Value.Day == DateTime.Now.Day) && item.days.IndexOf(DateTime.Now.DayOfWeek) != -1) {
+                    doneLabel.StyleContext.AddClass("done-label");
+                    doneLabel.Text = "Done";
+                    doneLabel.StyleContext.RemoveClass("notdone");
+                    doneLabel.StyleContext.AddClass("done");
+                } else if(item.done) {
+                    doneLabel.Text = "";
+                    doneLabel.StyleContext.RemoveClass("done-label");
+                } else if(!item.done) {
+                    doneLabel.StyleContext.AddClass("done-label");
+                    doneLabel.StyleContext.RemoveClass("done");
+                    doneLabel.StyleContext.AddClass("notdone");
+                    doneLabel.Text = "Not done";
+                    completeBtn.Show();
+                }
             };
+            
+            box.PackStart(doneLabel, false, false, 3);
+            
             foreach(var day in item.days) {
                 var lbl = new Label(day.ToString());
                 lbl.StyleContext.AddClass("day");
@@ -151,6 +171,27 @@ namespace DoIt
             if(item.days.Count != 0) box.Add(completeBtn);
             box.Add(deleteBtn);
             Add(box);
+            ShowAll();
+            completeBtn.Hide();
+            if(item.done && item.doneOn.Value.Day != DateTime.Now.Day && item.days.IndexOf(DateTime.Now.DayOfWeek) != -1) {
+                item.done = false;
+                Util.SaveToDos();
+            }
+            if((item.done && item.doneOn.Value.Day == DateTime.Now.Day) && item.days.IndexOf(DateTime.Now.DayOfWeek) != -1) {
+                doneLabel.StyleContext.AddClass("done-label");
+                doneLabel.Text = "Done";
+                doneLabel.StyleContext.RemoveClass("notdone");
+                doneLabel.StyleContext.AddClass("done");
+            } else if(item.done) {
+                    doneLabel.Text = "";
+                    doneLabel.StyleContext.RemoveClass("done-label");
+            } else if(!item.done) {
+                doneLabel.StyleContext.AddClass("done-label");
+                doneLabel.StyleContext.RemoveClass("done");
+                doneLabel.StyleContext.AddClass("notdone");
+                doneLabel.Text = "Not done";
+                completeBtn.Show();
+            }
         }
         public static void ShowDetails(Window parent, ToDoListItem listItem) {
             var dlg = new ItemDisplay(listItem.tdItem);
