@@ -110,6 +110,14 @@ namespace DoIt
                 item.done = false;
             }
             box.PackStart(doneLabel, false, false, 3);
+            var completeBtn = new Button(new Label("Complete"));
+            completeBtn.Clicked += delegate {
+                item.done = true;
+                item.doneOn = DateTime.Now;
+                doneLabel.Text = "Done";
+                doneLabel.StyleContext.RemoveClass("notdone");
+                doneLabel.StyleContext.AddClass("done");
+            };
             foreach(var day in item.days) {
                 var lbl = new Label(day.ToString());
                 lbl.StyleContext.AddClass("day");
@@ -119,6 +127,7 @@ namespace DoIt
                 }
                 box.Add(lbl);
             }
+            box.Add(completeBtn);
             box.Add(deleteBtn);
             Add(box);
         }
