@@ -198,7 +198,8 @@
                 <property name="can-focus">True</property>
                 <property name="valign">center</property>
                 <property name="shadow-type">in</property>
-                <property name="min-content-width">200</property>
+                <property name="min-content-width">60</property>
+                <property name="max-content-width">1000</property>
                 <child>
                   <object class="GtkViewport">
                     <property name="height-request">20</property>

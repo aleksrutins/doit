@@ -167,11 +167,6 @@
                 <property name="halign">start</property>
                 <property name="valign">center</property>
                 <property name="vexpand">True</property>
-                <property name="label" translatable="yes">Unneeded</property>
-                <style>
-                  <class name="done-label"/>
-                  <class name="notdone"/>
-                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -186,6 +181,9 @@
                 <property name="halign">center</property>
                 <property name="hexpand">True</property>
                 <property name="label" translatable="yes">label</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -200,7 +198,8 @@
                 <property name="can-focus">True</property>
                 <property name="valign">center</property>
                 <property name="shadow-type">in</property>
-                <property name="min-content-width">200</property>
+                <property name="min-content-width">100</property>
+                <property name="max-content-width">1000</property>
                 <child>
                   <object class="GtkViewport">
                     <property name="height-request">20</property>
