@@ -27,8 +27,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="editDetailsBtn">
-                <property name="label" translatable="yes">Edit</property>
+              <object class="GtkButton" id="saveDetailsBtn">
+                <property name="label" translatable="yes">Save</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -115,13 +115,19 @@
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
+            <property name="valign">center</property>
             <child>
               <object class="GtkLabel" id="doneLabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
+                <property name="valign">center</property>
                 <property name="vexpand">True</property>
                 <property name="label" translatable="yes">Not done</property>
+                <style>
+                  <class name="done-label"/>
+                  <class name="notdone"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -145,18 +151,24 @@
             </child>
             <child>
               <object class="GtkScrolledWindow">
+                <property name="height-request">20</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="valign">center</property>
                 <property name="shadow-type">in</property>
                 <property name="min-content-width">200</property>
                 <child>
                   <object class="GtkViewport">
+                    <property name="height-request">20</property>
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
+                    <property name="valign">center</property>
                     <child>
                       <object class="GtkBox" id="daysBox">
+                        <property name="height-request">20</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="valign">center</property>
                         <property name="spacing">4</property>
                         <child>
                           <placeholder/>
@@ -170,6 +182,19 @@
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="completeBtn">
+                <property name="label" translatable="yes">Complete</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
               </packing>
             </child>
           </object>

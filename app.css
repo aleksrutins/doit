@@ -1,10 +1,17 @@
-.day {
+.day, .done-label {
     border-radius: 5px;
     padding: 3px;
     background-color: lightgray;
     color: black;
 }
-.day.doitnow {
+.day.doitnow, .done-label.notdone {
     background-color: red;
     color: white;
+}
+.done-label.done {
+    background-color: green;
+    color: white;
+}
+.danger {
+    background-color: red;
 }

@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=DoIt
+Icon=task-due
+Comment=A to-do app.
+Exec=doit
+Type=Application
+Terminal=false

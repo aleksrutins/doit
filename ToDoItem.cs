@@ -12,7 +12,8 @@ namespace DoIt
         public List<ToDoItem> subtasks = new List<ToDoItem>();
         public List<string> tags = new List<string>();
         public List<DayOfWeek> days = new List<DayOfWeek>(new DayOfWeek[] {DateTime.Today.DayOfWeek});
-        public bool done;
+        public bool done = false;
+        public DateTime? doneOn = null;
     }
     public class ItemDisplay : Window {
         [UI] private Box daysBox = null;
@@ -21,6 +22,9 @@ namespace DoIt
         [UI] private ListBox subtasks = null;
         [UI] private Button addSubtaskBtn = null;
         [UI] private Button saveDetailsBtn = null;
+        [UI] private Label doneLabel = null;
+        [UI] private Button completeBtn = null;
+        [UI] private Button refreshSubtasksBtn = null;
         private ToDoItem item;
 
         public ItemDisplay(ToDoItem item) : this(new Builder("ItemDisplay.glade"), item) {}
@@ -33,6 +37,13 @@ namespace DoIt
             builder.Autoconnect(this);
             toDoName.Text = item.name;
             description.Buffer.Text = item.description;
+            if(item.done && item.doneOn.Value.Day == DateTime.Now.Day) {
+                doneLabel.Text = "Done";
+                doneLabel.StyleContext.RemoveClass("notdone");
+                doneLabel.StyleContext.AddClass("done");
+            } else {
+                item.done = false;
+            }
             foreach(var day in item.days) {
                 var lbl = new Label(day.ToString());
                 lbl.StyleContext.AddClass("day");
@@ -47,6 +58,10 @@ namespace DoIt
             subtasks.ShowAll();
             addSubtaskBtn.Clicked += delegate {
                 var res = Util.AddTask();
+                if(res == null) return; // Cancelled
+                if(res.inheritDays) {
+                    res.days = item.days;
+                }
                 item.subtasks.Add(new ToDoItem {
                     name = res.dlg.name.Text,
                     description = res.dlg.desc.Buffer.Text,
@@ -61,6 +76,16 @@ namespace DoIt
             saveDetailsBtn.Clicked += delegate {
                 item.description = description.Buffer.Text;
             };
+            completeBtn.Clicked += delegate {
+                item.done = true;
+                item.doneOn = DateTime.Now;
+                doneLabel.Text = "Done";
+                doneLabel.StyleContext.RemoveClass("notdone");
+                doneLabel.StyleContext.AddClass("done");
+            };
+            refreshSubtasksBtn.Clicked += delegate {
+                Util.RefreshList(subtasks, ToDoList.fromArray(item.subtasks), subtaskRemoved);
+            };
         }
     }
     public class ToDoListItem : ListBoxRow {
@@ -74,7 +99,17 @@ namespace DoIt
             box.PackStart(label, true, true, 0);
             deleteBtn = new Button(new Label("Delete"));
             deleteBtn.StyleContext.AddClass("danger");
-            box.Add(deleteBtn);
+            var doneLabel = new Label("Not done");
+            doneLabel.StyleContext.AddClass("done-label");
+            doneLabel.StyleContext.AddClass("notdone");
+            if(item.done && item.doneOn.Value.Day == DateTime.Now.Day) {
+                doneLabel.Text = "Done";
+                doneLabel.StyleContext.RemoveClass("notdone");
+                doneLabel.StyleContext.AddClass("done");
+            } else {
+                item.done = false;
+            }
+            box.PackStart(doneLabel, false, false, 3);
             foreach(var day in item.days) {
                 var lbl = new Label(day.ToString());
                 lbl.StyleContext.AddClass("day");
@@ -84,6 +119,7 @@ namespace DoIt
                 }
                 box.Add(lbl);
             }
+            box.Add(deleteBtn);
             Add(box);
         }
         public static void ShowDetails(Window parent, ToDoListItem listItem) {

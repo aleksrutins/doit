@@ -12,6 +12,7 @@ namespace DoIt
         public class DialogParseResult {
             public AddTaskDialog dlg;
             public List<DayOfWeek> days;
+            public bool inheritDays;
         }
         public static DialogParseResult AddTask() {
             var dlg = new AddTaskDialog();
@@ -19,8 +20,11 @@ namespace DoIt
             dlg.Hide();
             if(res == ResponseType.Cancel) return null;
             var days = new List<DayOfWeek>();
+            bool inheritDays = false;
             if(dlg.days.Text == "All") {
                 days.AddRange(new DayOfWeek[] {DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday, DayOfWeek.Sunday});
+            } else if(dlg.days.Text == "Inherit") {
+                inheritDays = true;
             } else if(!(dlg.days.Text == "" || dlg.days.Text == "None" || dlg.days.Text == null)) {
                 var dayStrs = dlg.days.Text.Split(',');
                 foreach (var dayStr in dayStrs)
@@ -30,7 +34,8 @@ namespace DoIt
             }
             return new DialogParseResult {
                 dlg = dlg,
-                days = days
+                days = days,
+                inheritDays = inheritDays
             };
         }
         // https://github.com/GtkSharp/GtkSharp/blob/develop/Source/Samples/Sections/Widgets/ImageSection.cs#L24
@@ -61,7 +66,7 @@ namespace DoIt
             var stream = new FileStream(itemsFile, FileMode.OpenOrCreate, FileAccess.Read);
             try {
                 toDos = (ToDoList)fmt.Deserialize(stream);
-            } catch(Exception e) {
+            } catch(Exception) {
                 toDos = ToDoList.fromArray(new List<ToDoItem>());
             } finally {
                 stream.Close();

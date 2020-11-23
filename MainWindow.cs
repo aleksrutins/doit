@@ -10,6 +10,7 @@ namespace DoIt
         [UI] private ListBox _tasks = null;
         [UI] private Button _addTask = null;
         [UI] private Button flushBtn = null;
+        [UI] private Button refreshBtn = null;
 
         public MainWindow() : this(new Builder("MainWindow.glade")) { }
 
@@ -26,6 +27,9 @@ namespace DoIt
             flushBtn.Clicked += delegate {
                 Util.SaveToDos();
             };
+            refreshBtn.Clicked += delegate {
+                Util.RefreshList(_tasks);
+            };
             Util.RefreshList(_tasks);
         }
 
@@ -36,6 +40,7 @@ namespace DoIt
 
         private void AddTask(object sender, EventArgs e) {
             var res = Util.AddTask();
+            if(res == null) return;
             Util.toDos.items.Add(new ToDoItem {
                 name = res.dlg.name.Text,
                 description = res.dlg.desc.Buffer.Text,
