@@ -47,6 +47,7 @@ namespace DoIt
                 days = res.days
             });
             Util.RefreshList(_tasks);
+            Util.SaveToDos();
         }
     }
 }

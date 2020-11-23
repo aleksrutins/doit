@@ -73,6 +73,7 @@ namespace DoIt
                     description = res.dlg.desc.Buffer.Text,
                     days = res.days
                 });
+                Util.SaveToDos();
                 Util.RefreshList(subtasks, ToDoList.fromArray(item.subtasks), subtaskRemoved);
             };
             subtasks.ListRowActivated += (o, args) => {
@@ -81,6 +82,7 @@ namespace DoIt
             };
             saveDetailsBtn.Clicked += delegate {
                 item.description = description.Buffer.Text;
+                Util.SaveToDos();
             };
             completeBtn.Clicked += delegate {
                 item.done = true;
@@ -117,6 +119,7 @@ namespace DoIt
                 doneLabel.StyleContext.RemoveClass("done");
                 doneLabel.StyleContext.AddClass("notdone");
                 doneLabel.Text = "Not done";
+                Util.SaveToDos();
             }
             box.PackStart(doneLabel, false, false, 3);
             var completeBtn = new Button(new Label("Complete"));
@@ -126,6 +129,7 @@ namespace DoIt
                 doneLabel.Text = "Done";
                 doneLabel.StyleContext.RemoveClass("notdone");
                 doneLabel.StyleContext.AddClass("done");
+                Util.SaveToDos();
             };
             foreach(var day in item.days) {
                 var lbl = new Label(day.ToString());
