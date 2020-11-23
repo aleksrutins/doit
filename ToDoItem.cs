@@ -61,6 +61,7 @@ namespace DoIt
             daysBox.ShowAll();
             Util.RefreshList(subtasks, ToDoList.fromArray(item.subtasks), subtaskRemoved);
             subtasks.ShowAll();
+            if(item.days.Count == 0) completeBtn.Hide();
             addSubtaskBtn.Clicked += delegate {
                 var res = Util.AddTask();
                 if(res == null) return; // Cancelled
@@ -135,7 +136,7 @@ namespace DoIt
                 }
                 box.Add(lbl);
             }
-            box.Add(completeBtn);
+            if(item.days.Count != 0) box.Add(completeBtn);
             box.Add(deleteBtn);
             Add(box);
         }
