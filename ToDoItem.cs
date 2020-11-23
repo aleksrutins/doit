@@ -37,6 +37,7 @@ namespace DoIt
             builder.Autoconnect(this);
             toDoName.Text = item.name;
             description.Buffer.Text = item.description;
+            completeBtn.Hide();
             if(item.done && item.doneOn.Value.Day != DateTime.Now.Day && item.days.IndexOf(DateTime.Now.DayOfWeek) != -1) {
                 item.done = false;
                 Util.SaveToDos();
@@ -51,6 +52,7 @@ namespace DoIt
                 doneLabel.StyleContext.RemoveClass("done");
                 doneLabel.StyleContext.AddClass("notdone");
                 doneLabel.Text = "Not done";
+                completeBtn.Show();
             }
             foreach(var day in item.days) {
                 var lbl = new Label(day.ToString());
