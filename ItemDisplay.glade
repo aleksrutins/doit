@@ -16,9 +16,22 @@
             <property name="can-focus">False</property>
             <property name="orientation">vertical</property>
             <child>
-              <object class="GtkTextView" id="description">
+              <object class="GtkScrolledWindow">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="shadow-type">in</property>
+                <child>
+                  <object class="GtkViewport">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkTextView" id="description">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -154,11 +167,6 @@
                 <property name="halign">start</property>
                 <property name="valign">center</property>
                 <property name="vexpand">True</property>
-                <property name="label" translatable="yes">Unneeded</property>
-                <style>
-                  <class name="done-label"/>
-                  <class name="notdone"/>
-                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -173,6 +181,9 @@
                 <property name="halign">center</property>
                 <property name="hexpand">True</property>
                 <property name="label" translatable="yes">label</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
               </object>
               <packing>
                 <property name="expand">True</property>

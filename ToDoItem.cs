@@ -38,10 +38,12 @@ namespace DoIt
             toDoName.Text = item.name;
             description.Buffer.Text = item.description;
             if(item.done && (item.doneOn.Value.Day == DateTime.Now.Day || (item.days.IndexOf(DateTime.Now.DayOfWeek) == -1))) {
+                doneLabel.StyleContext.AddClass("done-label");
                 doneLabel.Text = "Done";
                 doneLabel.StyleContext.RemoveClass("notdone");
                 doneLabel.StyleContext.AddClass("done");
             } else if(item.days.IndexOf(DateTime.Now.DayOfWeek) != -1) {
+                doneLabel.StyleContext.AddClass("done-label");
                 item.done = false;
                 doneLabel.StyleContext.RemoveClass("done");
                 doneLabel.StyleContext.AddClass("notdone");
