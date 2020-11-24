@@ -19,3 +19,4 @@
 /home/aleks/Projects/doit/obj/Debug/netcoreapp3.1/doit.dll
 /home/aleks/Projects/doit/obj/Debug/netcoreapp3.1/doit.pdb
 /home/aleks/Projects/doit/obj/Debug/netcoreapp3.1/doit.genruntimeconfig.cache
+/home/aleks/Projects/doit/bin/Debug/netcoreapp3.1/Newtonsoft.Json.dll

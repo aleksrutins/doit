@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using Gtk;
+using Newtonsoft.Json;
 
 namespace DoIt
 {
@@ -64,22 +65,12 @@ namespace DoIt
         public static ToDoList toDos;
         public static void LoadToDos() {
             Console.WriteLine("Loading todos");
-            var fmt = new BinaryFormatter();
-            var stream = new FileStream(itemsFile, FileMode.OpenOrCreate, FileAccess.Read);
-            try {
-                toDos = (ToDoList)fmt.Deserialize(stream);
-            } catch(Exception) {
-                toDos = ToDoList.fromArray(new List<ToDoItem>());
-            } finally {
-                stream.Close();
-            }
+            toDos = JsonConvert.DeserializeObject<ToDoList>(File.ReadAllText($"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/.doit.list.json"));
         }
         public static void SaveToDos() {
             Console.WriteLine("Saving todos");
-            var fmt = new BinaryFormatter();
-            var stream = new FileStream(itemsFile, FileMode.OpenOrCreate, FileAccess.Write);
-            fmt.Serialize(stream, toDos);
-            stream.Close();
+            var json = JsonConvert.SerializeObject(toDos, Formatting.None);
+            File.WriteAllText($"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/.doit.list.json", json);
         }
         public static void RefreshList(Gtk.ListBox widget) {
             RefreshList(widget, toDos, item => {

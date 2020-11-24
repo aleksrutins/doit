@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "SQ4yJPbXo8ng8o72CDOjoqgAkHCPKSOuteVPEd2TACesJd4H8pUbs3Wv2/segLQOxx50Z26nmJHfBAjnmyN4nA==",
+  "dgSpecHash": "LogT8z+KQSIhL/6p22RwXDL0Iujteur+woVJxpKr23XPjGKafJwrIfkTsNdGrDEfavllNdQH+4zBfaRTOkQAmw==",
   "success": true,
   "projectFilePath": "/home/aleks/Projects/doit/doit.csproj",
   "expectedPackageFiles": [
@@ -10,6 +10,7 @@
     "/home/aleks/.nuget/packages/giosharp/3.22.25.128/giosharp.3.22.25.128.nupkg.sha512",
     "/home/aleks/.nuget/packages/glibsharp/3.22.25.128/glibsharp.3.22.25.128.nupkg.sha512",
     "/home/aleks/.nuget/packages/gtksharp/3.22.25.128/gtksharp.3.22.25.128.nupkg.sha512",
+    "/home/aleks/.nuget/packages/newtonsoft.json/12.0.3/newtonsoft.json.12.0.3.nupkg.sha512",
     "/home/aleks/.nuget/packages/pangosharp/3.22.25.128/pangosharp.3.22.25.128.nupkg.sha512",
     "/home/aleks/.nuget/packages/microsoft.aspnetcore.app.ref/3.1.8/microsoft.aspnetcore.app.ref.3.1.8.nupkg.sha512",
     "/home/aleks/.nuget/packages/microsoft.netcore.app.host.linux-x64/3.1.9/microsoft.netcore.app.host.linux-x64.3.1.9.nupkg.sha512"

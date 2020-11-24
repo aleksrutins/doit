@@ -41,6 +41,10 @@
             "GtkSharp": {
               "target": "Package",
               "version": "[3.22.25.*, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
             }
           },
           "imports": [
