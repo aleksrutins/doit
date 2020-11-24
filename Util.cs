@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Xml.Serialization;
 using Gtk;
-using Newtonsoft.Json;
 
 namespace DoIt
 {
@@ -61,16 +60,23 @@ namespace DoIt
             StreamReader reader = new StreamReader(stream);
             return reader.ReadToEnd();
         }
-        public static string itemsFile = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/.doit.list.bin";
+        public static string itemsFile = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/.doit.list.xml";
         public static ToDoList toDos;
         public static void LoadToDos() {
             Console.WriteLine("Loading todos");
-            toDos = JsonConvert.DeserializeObject<ToDoList>(File.ReadAllText($"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/.doit.list.json"));
+            try {
+                XmlSerializer ser = new XmlSerializer(typeof(ToDoList));
+                var fs = new FileStream(itemsFile, FileMode.Open);
+                toDos = (ToDoList)ser.Deserialize(fs);
+            } catch(Exception) {
+                toDos = ToDoList.fromArray(new List<ToDoItem>());
+            }
         }
         public static void SaveToDos() {
             Console.WriteLine("Saving todos");
-            var json = JsonConvert.SerializeObject(toDos, Formatting.None);
-            File.WriteAllText($"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/.doit.list.json", json);
+            TextWriter wr = new StreamWriter(itemsFile);
+            XmlSerializer ser = new XmlSerializer(typeof(ToDoList));
+            ser.Serialize(wr, toDos);
         }
         public static void RefreshList(Gtk.ListBox widget) {
             RefreshList(widget, toDos, item => {
